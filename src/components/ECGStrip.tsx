@@ -121,24 +121,25 @@ function generatePath(kind: WaveformKind, width: number, height: number): string
       break;
     case "stemi-anterior":
       while (x < width) {
-        baseline(6); pWave(5); baseline(2);
-        // QRS
-        qrs(55, 6, 10);
-        // Convex ("tombstone") ST elevation merging into T wave
-        for (let i = 0; i < 18; i++) {
-          // dome shape: rises then plateaus then descends gently into T
-          const t = i / 18;
-          const dome = Math.sin(t * Math.PI) * 10 + 14; // elevated baseline + convex hump
-          points.push([x, mid - dome]);
+        baseline(8); pWave(5); baseline(2);
+        // Sharp upstroke of R wave (no S — tombstone)
+        points.push([x, mid + 4]); x += step;
+        points.push([x, mid - 70]); x += step;
+        // Single continuous convex dome from R apex back to baseline,
+        // with NO isoelectric segment — ST and T fused into one bulge.
+        // Length tuned so the dome is wide and clearly "tombstone-like".
+        const domeLen = 36;
+        const peakY = -70;     // start at R peak
+        const endY = -2;       // ends just above baseline (T returns smoothly)
+        for (let i = 1; i <= domeLen; i++) {
+          const t = i / domeLen;
+          // Ease-out: stays high then descends gently (convex/dome)
+          const eased = 1 - Math.pow(1 - t, 2.4);
+          const y = peakY + (endY - peakY) * eased;
+          points.push([x, mid + y]);
           x += step;
         }
-        // T wave continuation (broad, hyperacute)
-        for (let i = 0; i < 10; i++) {
-          const v = Math.sin((i / 10) * Math.PI) * 8 + 4;
-          points.push([x, mid - v]);
-          x += step;
-        }
-        baseline(12);
+        baseline(14);
       }
       break;
     case "stemi-inferior":
