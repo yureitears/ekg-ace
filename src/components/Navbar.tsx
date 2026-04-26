@@ -6,10 +6,10 @@ export function Navbar() {
   const stats = loadStats();
   const loc = useLocation();
   const links = [
-    { to: "/dashboard", label: "Dashboard" },
-    { to: "/daily", label: "Daily" },
-    { to: "/quiz", label: "Quiz Bank" },
-    { to: "/leaderboard", label: "Leaderboard" },
+    { to: "/dashboard", label: "Panel" },
+    { to: "/daily", label: "Diario" },
+    { to: "/quiz", label: "Banco de Preguntas" },
+    { to: "/leaderboard", label: "Clasificación" },
   ];
 
   return (
@@ -47,7 +47,7 @@ export function Navbar() {
             <div className="flex items-center gap-1.5 rounded-md border border-border bg-secondary/40 px-2.5 py-1.5">
               <Flame className="h-4 w-4 text-warning" />
               <span className="font-mono-clinical text-sm font-semibold">{stats.streak}</span>
-              <span className="text-xs text-muted-foreground">day{stats.streak !== 1 ? "s" : ""}</span>
+              <span className="text-xs text-muted-foreground">día{stats.streak !== 1 ? "s" : ""}</span>
             </div>
           )}
         </div>

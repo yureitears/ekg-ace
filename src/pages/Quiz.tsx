@@ -8,6 +8,11 @@ import { CASES, type Difficulty, type Category } from "@/data/cases";
 import { recordAttempt } from "@/lib/storage";
 
 const DIFFS: Difficulty[] = ["beginner", "intermediate", "advanced"];
+const DIFF_LABELS: Record<Difficulty, string> = {
+  beginner: "Principiante",
+  intermediate: "Intermedio",
+  advanced: "Avanzado",
+};
 
 const Quiz = () => {
   const [params] = useSearchParams();
@@ -65,8 +70,8 @@ const Quiz = () => {
       <div className="min-h-screen">
         <Navbar />
         <main className="container py-16 text-center">
-          <p className="text-muted-foreground">No cases match your filters.</p>
-          <Button onClick={() => { setCategory(null); setDifficulty(null); }} className="mt-4">Reset filters</Button>
+          <p className="text-muted-foreground">Ningún caso coincide con tus filtros.</p>
+          <Button onClick={() => { setCategory(null); setDifficulty(null); }} className="mt-4">Restablecer filtros</Button>
         </main>
       </div>
     );
@@ -78,11 +83,11 @@ const Quiz = () => {
       <main className="container max-w-5xl py-8">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="font-mono-clinical text-xs uppercase tracking-widest text-primary">Quiz Bank</p>
-            <h1 className="mt-1 font-display text-3xl font-bold">Practice mode</h1>
+            <p className="font-mono-clinical text-xs uppercase tracking-widest text-primary">Banco de Preguntas</p>
+            <h1 className="mt-1 font-display text-3xl font-bold">Modo práctica</h1>
           </div>
           <div className="font-mono-clinical text-sm text-muted-foreground">
-            Score <span className="text-primary">{score.correct}</span> / {score.total}
+            Puntuación <span className="text-primary">{score.correct}</span> / {score.total}
             {timed && (
               <span className="ml-4 inline-flex items-center gap-1 text-warning">
                 <Timer className="h-4 w-4" />{Math.max(0, timeLeft)}s
@@ -94,22 +99,28 @@ const Quiz = () => {
         {/* Filters */}
         <div className="card-elevated mb-6 flex flex-wrap items-center gap-3 rounded-xl p-4">
           <Filter className="h-4 w-4 text-muted-foreground" />
-          <FilterGroup label="Category" current={category} onChange={(v) => setCategory(v as Category | null)} options={categories} />
-          <FilterGroup label="Difficulty" current={difficulty} onChange={(v) => setDifficulty(v as Difficulty | null)} options={DIFFS} />
+          <FilterGroup label="Categoría" current={category} onChange={(v) => setCategory(v as Category | null)} options={categories} />
+          <FilterGroup
+            label="Dificultad"
+            current={difficulty}
+            onChange={(v) => setDifficulty(v as Difficulty | null)}
+            options={DIFFS}
+            renderLabel={(v) => DIFF_LABELS[v as Difficulty]}
+          />
           <label className="ml-auto inline-flex items-center gap-2 text-sm">
             <input type="checkbox" checked={timed} onChange={(e) => setTimed(e.target.checked)} className="accent-primary" />
-            Timed mode
+            Modo cronometrado
           </label>
-          <Button variant="ghost" size="sm" onClick={() => setSeed((s) => s + 1)}>Shuffle</Button>
+          <Button variant="ghost" size="sm" onClick={() => setSeed((s) => s + 1)}>Mezclar</Button>
         </div>
 
-        <ECGStrip kind={current.waveform} height={240} animated showLabel={`CASE ${current.id.toUpperCase()} · ${current.category}`} />
+        <ECGStrip kind={current.waveform} height={240} animated showLabel={`CASO ${current.id.toUpperCase()} · ${current.category}`} />
 
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 font-mono-clinical text-xs">
-          <Vital k="RATE" v={`${current.rate || "—"} bpm`} />
-          <Vital k="RHYTHM" v={current.rhythm} />
+          <Vital k="FC" v={`${current.rate || "—"} lpm`} />
+          <Vital k="RITMO" v={current.rhythm} />
           <Vital k="QRS" v={current.intervals.qrs} />
-          <Vital k="DIFFICULTY" v={current.difficulty.toUpperCase()} />
+          <Vital k="DIFICULTAD" v={DIFF_LABELS[current.difficulty].toUpperCase()} />
         </div>
 
         {/* Options */}
@@ -145,11 +156,11 @@ const Quiz = () => {
           <div className="card-elevated mt-6 animate-fade-up rounded-xl p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground">Diagnosis</p>
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">Diagnóstico</p>
                 <h3 className="font-display text-2xl font-bold">{current.diagnosis}</h3>
               </div>
               <Button onClick={next} className="shrink-0 glow-primary">
-                Next case <ChevronRight className="ml-1 h-4 w-4" />
+                Siguiente caso <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
             </div>
             <p className="mt-3 leading-relaxed text-muted-foreground">{current.explanation}</p>
@@ -164,7 +175,7 @@ const Quiz = () => {
         )}
 
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          Want to compete? <Link to="/leaderboard" className="text-primary hover:underline">View the leaderboard →</Link>
+          ¿Quieres competir? <Link to="/leaderboard" className="text-primary hover:underline">Ver la clasificación →</Link>
         </div>
       </main>
     </div>
@@ -180,14 +191,14 @@ function Vital({ k, v }: { k: string; v: string }) {
   );
 }
 
-function FilterGroup<T extends string>({ label, current, onChange, options }: { label: string; current: T | null; onChange: (v: T | null) => void; options: readonly T[] | T[] }) {
+function FilterGroup<T extends string>({ label, current, onChange, options, renderLabel }: { label: string; current: T | null; onChange: (v: T | null) => void; options: readonly T[] | T[]; renderLabel?: (v: T) => string }) {
   return (
     <div className="flex items-center gap-1.5">
       <span className="text-xs uppercase tracking-widest text-muted-foreground">{label}:</span>
       <div className="flex flex-wrap gap-1">
-        <Chip active={current === null} onClick={() => onChange(null)}>All</Chip>
+        <Chip active={current === null} onClick={() => onChange(null)}>Todas</Chip>
         {options.map((o) => (
-          <Chip key={o} active={current === o} onClick={() => onChange(o)}>{o}</Chip>
+          <Chip key={o} active={current === o} onClick={() => onChange(o)}>{renderLabel ? renderLabel(o) : o}</Chip>
         ))}
       </div>
     </div>

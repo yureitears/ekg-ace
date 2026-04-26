@@ -6,33 +6,33 @@ import { ECGStrip } from "@/components/ECGStrip";
 const features = [
   {
     icon: Flame,
-    title: "Daily ECG",
-    body: "One curated tracing every day. Limited attempts, escalating hints. Build a streak.",
+    title: "ECG Diario",
+    body: "Un trazado cuidadosamente elegido cada día. Intentos limitados, pistas progresivas. Construye tu racha.",
   },
   {
     icon: Brain,
-    title: "Quiz Bank",
-    body: "Practice across arrhythmias, ischemia, blocks, and electrolytes — beginner to advanced.",
+    title: "Banco de Preguntas",
+    body: "Practica arritmias, isquemia, bloqueos y electrolitos — desde principiante hasta avanzado.",
   },
   {
     icon: Zap,
-    title: "Spaced Repetition",
-    body: "Cases you miss come back when you need them most. Master high-yield patterns.",
+    title: "Repetición Espaciada",
+    body: "Los casos que fallas vuelven cuando más los necesitas. Domina los patrones de alto rendimiento.",
   },
   {
     icon: Target,
-    title: "Timed Mode",
-    body: "Exam-style pressure. 90 seconds per ECG, score against your best.",
+    title: "Modo Cronometrado",
+    body: "Presión tipo examen. 90 segundos por ECG, compite contra tu mejor marca.",
   },
   {
     icon: Trophy,
-    title: "Leaderboards",
-    body: "Compete globally or with your study group. Earn badges for accuracy and streaks.",
+    title: "Clasificaciones",
+    body: "Compite a nivel global o con tu grupo de estudio. Gana insignias por precisión y rachas.",
   },
   {
     icon: Activity,
-    title: "Annotated Feedback",
-    body: "Every answer comes with rate, rhythm, intervals, and a clinical teaching point.",
+    title: "Retroalimentación Anotada",
+    body: "Cada respuesta incluye frecuencia, ritmo, intervalos y un punto clave clínico.",
   },
 ];
 
@@ -51,38 +51,38 @@ const Landing = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
               </span>
-              Live · 21 cases · updated daily
+              En vivo · 21 casos · actualizado a diario
             </div>
 
             <h1 className="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
-              Read every ECG <br />
-              <span className="text-primary text-glow">like it's a heartbeat.</span>
+              Lee cada ECG <br />
+              <span className="text-primary text-glow">como si fuera un latido.</span>
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
-              Wordle-style daily ECG challenges, a deep quiz bank, and instant clinical
-              explanations. Built for medical students who want pattern recognition that sticks.
+              Retos diarios de ECG estilo Wordle, un amplio banco de preguntas y explicaciones
+              clínicas instantáneas. Hecho para estudiantes de medicina que quieren reconocer patrones de verdad.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <Button asChild size="lg" className="h-12 px-8 text-base font-semibold glow-primary">
-                <Link to="/daily">Try today's ECG →</Link>
+                <Link to="/daily">Prueba el ECG de hoy →</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base">
-                <Link to="/quiz">Browse quiz bank</Link>
+                <Link to="/quiz">Ver banco de preguntas</Link>
               </Button>
             </div>
           </div>
 
           {/* Hero ECG strip */}
           <div className="mx-auto mt-16 max-w-5xl animate-fade-up">
-            <ECGStrip kind="nsr" height={180} animated showLabel="LEAD II · 25 mm/s" />
+            <ECGStrip kind="nsr" height={180} animated showLabel="DERIVACIÓN II · 25 mm/s" />
             <div className="mt-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 font-mono-clinical text-xs text-muted-foreground">
-              <span>RATE <span className="text-primary">72 bpm</span></span>
+              <span>FC <span className="text-primary">72 lpm</span></span>
               <span>PR <span className="text-primary">160 ms</span></span>
               <span>QRS <span className="text-primary">90 ms</span></span>
               <span>QT <span className="text-primary">400 ms</span></span>
-              <span>AXIS <span className="text-primary">+60°</span></span>
+              <span>EJE <span className="text-primary">+60°</span></span>
             </div>
           </div>
         </div>
@@ -93,10 +93,10 @@ const Landing = () => {
         <div className="container py-24">
           <div className="mx-auto mb-16 max-w-2xl text-center">
             <h2 className="font-display text-3xl font-bold md:text-4xl">
-              Pattern recognition, <span className="text-primary">drilled.</span>
+              Reconocimiento de patrones, <span className="text-primary">entrenado.</span>
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Every feature is designed to make rhythms, axes and ST changes second nature.
+              Cada función está diseñada para que ritmos, ejes y cambios del ST se vuelvan instintivos.
             </p>
           </div>
 
@@ -123,13 +123,13 @@ const Landing = () => {
           <div className="absolute inset-0 ecg-grid-soft opacity-50" />
           <div className="relative">
             <h2 className="font-display text-3xl font-bold md:text-4xl">
-              Your next shift starts now.
+              Tu próxima guardia empieza ahora.
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-              No signup required for today's challenge. Jump in, read the strip, and start your streak.
+              Sin registro para el reto de hoy. Entra, lee el trazado y comienza tu racha.
             </p>
             <Button asChild size="lg" className="mt-8 h-12 px-8 text-base font-semibold glow-primary">
-              <Link to="/daily">Start today's ECG</Link>
+              <Link to="/daily">Empezar el ECG de hoy</Link>
             </Button>
           </div>
         </div>
@@ -139,9 +139,9 @@ const Landing = () => {
         <div className="container flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Activity className="h-4 w-4 text-primary" />
-            <span>EKGdle · For educational use only</span>
+            <span>EKGdle · Solo para uso educativo</span>
           </div>
-          <span className="font-mono-clinical text-xs">v0.1 · Built for med students</span>
+          <span className="font-mono-clinical text-xs">v0.1 · Hecho para estudiantes de medicina</span>
         </div>
       </footer>
     </div>

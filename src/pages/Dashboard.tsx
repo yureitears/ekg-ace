@@ -23,17 +23,17 @@ const Dashboard = () => {
       <main className="container py-10">
         <div className="mb-8">
           <p className="font-mono-clinical text-xs uppercase tracking-widest text-primary">
-            Welcome back
+            Bienvenido de nuevo
           </p>
-          <h1 className="mt-1 font-display text-3xl font-bold md:text-4xl">Your control room</h1>
+          <h1 className="mt-1 font-display text-3xl font-bold md:text-4xl">Tu sala de control</h1>
         </div>
 
         {/* Stats grid */}
         <div className="grid gap-4 md:grid-cols-4">
-          <StatCard icon={Flame} label="Current streak" value={`${stats.streak} day${stats.streak !== 1 ? "s" : ""}`} accent="text-warning" />
-          <StatCard icon={TrendingUp} label="Best streak" value={`${stats.bestStreak}`} />
-          <StatCard icon={Target} label="Accuracy" value={`${accuracy}%`} accent="text-primary" />
-          <StatCard icon={Calendar} label="Cases solved" value={`${stats.attempts.filter(a => a.correct).length}`} />
+          <StatCard icon={Flame} label="Racha actual" value={`${stats.streak} día${stats.streak !== 1 ? "s" : ""}`} accent="text-warning" />
+          <StatCard icon={TrendingUp} label="Mejor racha" value={`${stats.bestStreak}`} />
+          <StatCard icon={Target} label="Precisión" value={`${accuracy}%`} accent="text-primary" />
+          <StatCard icon={Calendar} label="Casos resueltos" value={`${stats.attempts.filter(a => a.correct).length}`} />
         </div>
 
         {/* Daily challenge */}
@@ -42,33 +42,33 @@ const Dashboard = () => {
             <div className="grid gap-0 lg:grid-cols-[1fr_420px]">
               <div className="p-8">
                 <div className="flex items-center gap-2 font-mono-clinical text-xs uppercase tracking-widest text-primary">
-                  <Flame className="h-3.5 w-3.5" /> Today's daily ECG
+                  <Flame className="h-3.5 w-3.5" /> ECG diario de hoy
                 </div>
                 <h2 className="mt-3 font-display text-3xl font-bold">
-                  {todayDone ? "Daily complete." : "A new tracing is waiting."}
+                  {todayDone ? "Diario completado." : "Hay un nuevo trazado esperándote."}
                 </h2>
                 <p className="mt-3 max-w-md text-muted-foreground">
                   {todayDone
-                    ? `You ${stats.dailyHistory[todayKey()].correct ? "nailed" : "missed"} today's challenge. Come back tomorrow at midnight.`
-                    : "You have 4 attempts. Hints unlock as you go. Don't break the streak."}
+                    ? `${stats.dailyHistory[todayKey()].correct ? "Acertaste" : "Fallaste"} el reto de hoy. Vuelve mañana a medianoche.`
+                    : "Tienes 4 intentos. Las pistas se desbloquean conforme avanzas. No rompas la racha."}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Button asChild size="lg" className="glow-primary">
                     <Link to="/daily">
-                      {todayDone ? "Review today" : "Play daily"} <ArrowRight className="ml-1 h-4 w-4" />
+                      {todayDone ? "Revisar el de hoy" : "Jugar diario"} <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
-                    <Link to="/quiz">Practice instead</Link>
+                    <Link to="/quiz">Practicar en su lugar</Link>
                   </Button>
                 </div>
               </div>
               <div className="relative bg-[hsl(220_35%_4%)] p-6">
-                <ECGStrip kind={daily.waveform} height={220} animated showLabel="DAILY · LEAD II" />
+                <ECGStrip kind={daily.waveform} height={220} animated showLabel="DIARIO · DERIVACIÓN II" />
                 <div className="mt-3 grid grid-cols-3 gap-3 font-mono-clinical text-[11px]">
-                  <Pill k="RATE" v={`${daily.rate || "—"} bpm`} />
+                  <Pill k="FC" v={`${daily.rate || "—"} lpm`} />
                   <Pill k="QRS" v={daily.intervals.qrs} />
-                  <Pill k="DIFFICULTY" v={daily.difficulty.toUpperCase()} />
+                  <Pill k="DIFICULTAD" v={difficultyLabel(daily.difficulty)} />
                 </div>
               </div>
             </div>
@@ -78,8 +78,8 @@ const Dashboard = () => {
         {/* Categories */}
         <section className="mt-10">
           <div className="mb-4 flex items-end justify-between">
-            <h2 className="font-display text-xl font-semibold">Quiz by category</h2>
-            <Link to="/quiz" className="text-sm text-primary hover:underline">Browse all →</Link>
+            <h2 className="font-display text-xl font-semibold">Preguntas por categoría</h2>
+            <Link to="/quiz" className="text-sm text-primary hover:underline">Ver todas →</Link>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {Object.entries(categoryCounts).map(([cat, count]) => (
@@ -103,6 +103,13 @@ const Dashboard = () => {
     </div>
   );
 };
+
+function difficultyLabel(d: string) {
+  if (d === "beginner") return "PRINCIPIANTE";
+  if (d === "intermediate") return "INTERMEDIO";
+  if (d === "advanced") return "AVANZADO";
+  return d.toUpperCase();
+}
 
 function StatCard({ icon: Icon, label, value, accent = "text-foreground" }: { icon: any; label: string; value: string; accent?: string }) {
   return (

@@ -120,7 +120,26 @@ function generatePath(kind: WaveformKind, width: number, height: number): string
       }
       break;
     case "stemi-anterior":
-      while (x < width) { baseline(6); pWave(6); baseline(2); qrs(50); stElevation(22, 10); tWave(20); baseline(10); }
+      while (x < width) {
+        baseline(6); pWave(5); baseline(2);
+        // QRS
+        qrs(55, 6, 10);
+        // Convex ("tombstone") ST elevation merging into T wave
+        for (let i = 0; i < 18; i++) {
+          // dome shape: rises then plateaus then descends gently into T
+          const t = i / 18;
+          const dome = Math.sin(t * Math.PI) * 10 + 14; // elevated baseline + convex hump
+          points.push([x, mid - dome]);
+          x += step;
+        }
+        // T wave continuation (broad, hyperacute)
+        for (let i = 0; i < 10; i++) {
+          const v = Math.sin((i / 10) * Math.PI) * 8 + 4;
+          points.push([x, mid - v]);
+          x += step;
+        }
+        baseline(12);
+      }
       break;
     case "stemi-inferior":
       while (x < width) { baseline(14); pWave(6); baseline(2); qrs(50); stElevation(16, 10); tWave(16); baseline(14); }

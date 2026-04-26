@@ -50,19 +50,19 @@ const Daily = () => {
         <div className="mb-6 flex items-center justify-between">
           <div>
             <p className="flex items-center gap-2 font-mono-clinical text-xs uppercase tracking-widest text-primary">
-              <Flame className="h-3.5 w-3.5" /> Daily ECG · {todayKey()}
+              <Flame className="h-3.5 w-3.5" /> ECG Diario · {todayKey()}
             </p>
-            <h1 className="mt-1 font-display text-3xl font-bold">Diagnose this tracing</h1>
+            <h1 className="mt-1 font-display text-3xl font-bold">Diagnostica este trazado</h1>
           </div>
           <div className="font-mono-clinical text-sm text-muted-foreground">
-            <span className="text-primary">{remaining}</span> / {MAX_ATTEMPTS} attempts
+            <span className="text-primary">{remaining}</span> / {MAX_ATTEMPTS} intentos
           </div>
         </div>
 
-        <ECGStrip kind={c.waveform} height={260} animated showLabel="LEAD II · 25 mm/s" />
+        <ECGStrip kind={c.waveform} height={260} animated showLabel="DERIVACIÓN II · 25 mm/s" />
 
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 font-mono-clinical text-xs">
-          <Vital k="RATE" v={`${c.rate || "—"} bpm`} />
+          <Vital k="FC" v={`${c.rate || "—"} lpm`} />
           <Vital k="PR" v={c.intervals.pr} />
           <Vital k="QRS" v={c.intervals.qrs} />
           <Vital k="QT" v={c.intervals.qt} />
@@ -74,7 +74,7 @@ const Daily = () => {
             {c.hints.slice(0, hintsShown).map((h, i) => (
               <div key={i} className="flex items-start gap-2 rounded-lg border border-warning/30 bg-warning/5 px-4 py-3 text-sm animate-fade-up">
                 <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
-                <span><span className="font-semibold text-warning">Hint {i + 1}:</span> {h}</span>
+                <span><span className="font-semibold text-warning">Pista {i + 1}:</span> {h}</span>
               </div>
             ))}
           </div>
@@ -95,22 +95,22 @@ const Daily = () => {
         {!done ? (
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-muted-foreground">Your diagnosis</label>
+              <label className="mb-2 block text-sm font-medium text-muted-foreground">Tu diagnóstico</label>
               <div className="flex gap-2">
                 <Input
                   value={guess}
                   onChange={(e) => setGuess(e.target.value)}
-                  placeholder="e.g. atrial fibrillation, anterior STEMI..."
+                  placeholder="ej. fibrilación auricular, IAMCEST anterior..."
                   className="h-12 text-base"
                   autoFocus
                 />
-                <Button type="submit" size="lg" className="h-12 px-6 glow-primary">Submit</Button>
+                <Button type="submit" size="lg" className="h-12 px-6 glow-primary">Enviar</Button>
               </div>
             </div>
 
             {/* Quick options */}
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">Or pick one</p>
+              <p className="mb-2 text-xs uppercase tracking-widest text-muted-foreground">O elige una</p>
               <div className="flex flex-wrap gap-2">
                 {c.options.map((opt) => (
                   <button
@@ -154,7 +154,7 @@ function Result({ c, correct, attemptsCount }: { c: ReturnType<typeof getDailyCa
           )}
           <div>
             <p className="text-xs uppercase tracking-widest text-muted-foreground">
-              {correct ? `Solved in ${attemptsCount} attempt${attemptsCount > 1 ? "s" : ""}` : "Out of attempts"}
+              {correct ? `Resuelto en ${attemptsCount} intento${attemptsCount > 1 ? "s" : ""}` : "Sin intentos restantes"}
             </p>
             <h2 className="font-display text-2xl font-bold">{c.diagnosis}</h2>
           </div>
@@ -162,10 +162,10 @@ function Result({ c, correct, attemptsCount }: { c: ReturnType<typeof getDailyCa
       </div>
 
       <div className="card-elevated rounded-xl p-6">
-        <h3 className="font-display text-lg font-semibold">Clinical explanation</h3>
+        <h3 className="font-display text-lg font-semibold">Explicación clínica</h3>
         <p className="mt-2 leading-relaxed text-muted-foreground">{c.explanation}</p>
 
-        <h4 className="mt-6 text-xs uppercase tracking-widest text-primary">Key teaching points</h4>
+        <h4 className="mt-6 text-xs uppercase tracking-widest text-primary">Puntos clave de aprendizaje</h4>
         <ul className="mt-2 space-y-1.5">
           {c.keyPoints.map((k, i) => (
             <li key={i} className="flex gap-2 text-sm">
@@ -178,10 +178,10 @@ function Result({ c, correct, attemptsCount }: { c: ReturnType<typeof getDailyCa
 
       <div className="flex flex-wrap gap-3">
         <Button asChild size="lg" className="glow-primary">
-          <Link to="/quiz">Practice more <RefreshCcw className="ml-1 h-4 w-4" /></Link>
+          <Link to="/quiz">Practicar más <RefreshCcw className="ml-1 h-4 w-4" /></Link>
         </Button>
         <Button asChild variant="outline" size="lg">
-          <Link to="/dashboard">Back to dashboard</Link>
+          <Link to="/dashboard">Volver al panel</Link>
         </Button>
       </div>
     </div>
