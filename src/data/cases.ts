@@ -221,7 +221,7 @@ export const CASES: ECGCase[] = [
     id: "c11",
     diagnosis: "Wolff-Parkinson-White",
     aliases: ["wpw", "wolff-parkinson-white", "wolff parkinson white", "pre-excitation"],
-    options: ["WPW", "LBBB", "RBBB", "Hyperkalemia"],
+    options: ["Wolff-Parkinson-White", "Bloqueo de Rama Izquierda", "Bloqueo de Rama Derecha", "Hiperpotasemia"],
     difficulty: "advanced",
     category: "Pre-excitation",
     waveform: "wpw",
