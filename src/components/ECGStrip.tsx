@@ -278,8 +278,216 @@ function generatePath(kind: WaveformKind, width: number, height: number): string
         points.push([x, mid + 8]); x += step * 2;
         points.push([x, mid - 70]); x += step * 3;
         points.push([x, mid + 30]); x += step * 2;
-        tWave(16, true);
+    tWave(16, true);
         baseline(20);
+      }
+      break;
+    case "sinus-tach":
+      while (x < width) { baseline(2); pWave(6); baseline(1); qrs(50); tWave(12); baseline(4); }
+      break;
+    case "mat":
+      while (x < width) {
+        const amp = 3 + Math.random() * 7;
+        const dir = Math.random() > 0.5 ? 1 : -1;
+        for (let i = 0; i < 8; i++) {
+          points.push([x, mid - dir * Math.sin((i / 8) * Math.PI) * amp]);
+          x += step;
+        }
+        baseline(2); qrs(); tWave(10);
+        baseline(4 + Math.floor(Math.random() * 8));
+      }
+      break;
+    case "pac":
+      while (x < width) {
+        for (let n = 0; n < 3; n++) { baseline(6); pWave(6); baseline(2); qrs(); tWave(12); baseline(10); }
+        baseline(2);
+        for (let i = 0; i < 6; i++) { points.push([x, mid - Math.sin((i / 6) * Math.PI) * 9]); x += step; }
+        qrs(); tWave(12); baseline(16);
+      }
+      break;
+    case "wenckebach":
+      while (x < width) {
+        baseline(4); pWave(6); baseline(2); qrs(); tWave(10); baseline(8);
+        baseline(4); pWave(6); baseline(6); qrs(); tWave(10); baseline(8);
+        baseline(4); pWave(6); baseline(12); qrs(); tWave(10); baseline(8);
+        baseline(4); pWave(6); baseline(20);
+      }
+      break;
+    case "mobitz-ii":
+      while (x < width) {
+        baseline(4); pWave(6); baseline(4); qrs(); tWave(10); baseline(10);
+        baseline(4); pWave(6); baseline(4); qrs(); tWave(10); baseline(10);
+        baseline(4); pWave(6); baseline(20);
+      }
+      break;
+    case "junctional":
+      while (x < width) {
+        baseline(20); qrs(45);
+        for (let i = 0; i < 5; i++) { points.push([x, mid + Math.sin((i / 5) * Math.PI) * 4]); x += step; }
+        tWave(10); baseline(20);
+      }
+      break;
+    case "idioventricular":
+      while (x < width) {
+        baseline(40);
+        points.push([x, mid + 6]); x += step * 2;
+        points.push([x, mid - 50]); x += step * 3;
+        points.push([x, mid + 20]); x += step * 2;
+        points.push([x, mid - 6]); x += step * 2;
+        tWave(14, true);
+        baseline(40);
+      }
+      break;
+    case "paced":
+      while (x < width) {
+        baseline(8);
+        points.push([x, mid - 60]); x += 1;
+        points.push([x, mid + 4]); x += 1;
+        points.push([x, mid + 4]); x += step;
+        points.push([x, mid - 35]); x += step * 2;
+        points.push([x, mid - 20]); x += step * 2;
+        points.push([x, mid + 6]); x += step;
+        tWave(12, true);
+        baseline(14);
+      }
+      break;
+    case "posterior-stemi":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2);
+        points.push([x, mid - 4]); x += step;
+        points.push([x, mid - 55]); x += step;
+        points.push([x, mid - 10]); x += step;
+        for (let i = 0; i < 14; i++) {
+          points.push([x, mid + 12 + Math.sin((i / 14) * Math.PI) * 2]);
+          x += step;
+        }
+        for (let i = 0; i < 10; i++) { points.push([x, mid - Math.sin((i / 10) * Math.PI) * 14]); x += step; }
+        baseline(8);
+      }
+      break;
+    case "nstemi":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2); qrs(48);
+        for (let i = 0; i < 10; i++) { points.push([x, mid + 10]); x += step; }
+        for (let i = 0; i < 12; i++) { points.push([x, mid + Math.sin((i / 12) * Math.PI) * 14]); x += step; }
+        baseline(8);
+      }
+      break;
+    case "wellens":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2); qrs(50);
+        for (let i = 0; i < 6; i++) { points.push([x, mid]); x += step; }
+        for (let i = 0; i < 16; i++) {
+          const v = Math.sin((i / 16) * Math.PI) * 26;
+          points.push([x, mid + v]); x += step;
+        }
+        baseline(10);
+      }
+      break;
+    case "brugada":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2);
+        points.push([x, mid + 4]); x += step;
+        points.push([x, mid - 36]); x += step;
+        points.push([x, mid - 22]); x += step;
+        for (let i = 0; i < 18; i++) {
+          const t = i / 18;
+          const y = -22 + (30 * t);
+          points.push([x, mid + y]); x += step;
+        }
+        for (let i = 0; i < 8; i++) { points.push([x, mid + 8 + Math.sin((i / 8) * Math.PI) * 6]); x += step; }
+        baseline(10);
+      }
+      break;
+    case "hypothermia":
+      while (x < width) {
+        baseline(20); pWave(6); baseline(2); qrs(48);
+        points.push([x, mid - 18]); x += step;
+        points.push([x, mid - 22]); x += step;
+        points.push([x, mid - 12]); x += step;
+        baseline(4);
+        tWave(10);
+        baseline(20);
+      }
+      break;
+    case "digoxin":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2); qrs(48);
+        for (let i = 0; i < 14; i++) {
+          const t = i / 14;
+          const y = 4 + Math.sin(t * Math.PI) * 10;
+          points.push([x, mid + y]); x += step;
+        }
+        for (let i = 0; i < 6; i++) { points.push([x, mid - Math.sin((i / 6) * Math.PI) * 4]); x += step; }
+        baseline(10);
+      }
+      break;
+    case "long-qt":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2); qrs(48);
+        for (let i = 0; i < 22; i++) { points.push([x, mid]); x += step; }
+        for (let i = 0; i < 18; i++) { points.push([x, mid - Math.sin((i / 18) * Math.PI) * 16]); x += step; }
+        baseline(10);
+      }
+      break;
+    case "early-repol":
+      while (x < width) {
+        baseline(6); pWave(6); baseline(2); qrs(50);
+        points.push([x, mid - 14]); x += step;
+        points.push([x, mid - 10]); x += step;
+        for (let i = 0; i < 14; i++) {
+          const t = i / 14;
+          const y = -8 - Math.sin(t * Math.PI) * 4;
+          points.push([x, mid + y]); x += step;
+        }
+        for (let i = 0; i < 12; i++) { points.push([x, mid - Math.sin((i / 12) * Math.PI) * 18]); x += step; }
+        baseline(10);
+      }
+      break;
+    case "rvh":
+      while (x < width) {
+        baseline(6); pWave(8); baseline(2);
+        points.push([x, mid + 4]); x += step;
+        points.push([x, mid - 60]); x += step;
+        points.push([x, mid + 20]); x += step;
+        points.push([x, mid + 4]); x += step;
+        tWave(10, true);
+        baseline(10);
+      }
+      break;
+    case "agonal":
+      while (x < width) {
+        baseline(40);
+        points.push([x, mid + 4]); x += step * 3;
+        points.push([x, mid - 18]); x += step * 4;
+        points.push([x, mid + 10]); x += step * 4;
+        points.push([x, mid - 4]); x += step * 3;
+        baseline(60);
+      }
+      break;
+    case "pulmonary-embolism":
+      while (x < width) {
+        baseline(4); pWave(8); baseline(2);
+        points.push([x, mid + 4]); x += step;
+        points.push([x, mid - 40]); x += step;
+        points.push([x, mid + 30]); x += step;
+        points.push([x, mid + 4]); x += step;
+        for (let i = 0; i < 12; i++) { points.push([x, mid + Math.sin((i / 12) * Math.PI) * 14]); x += step; }
+        baseline(8);
+      }
+      break;
+    case "pericardial-effusion":
+      while (x < width) {
+        baseline(6); pWave(4); baseline(2);
+        points.push([x, mid + 2]); x += step;
+        points.push([x, mid - 18]); x += step;
+        points.push([x, mid + 6]); x += step;
+        tWave(6); baseline(8);
+        baseline(4); pWave(4); baseline(2);
+        points.push([x, mid + 4]); x += step;
+        points.push([x, mid - 32]); x += step;
+        points.push([x, mid + 10]); x += step;
+        tWave(8); baseline(8);
       }
       break;
   }
