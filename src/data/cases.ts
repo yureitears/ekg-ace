@@ -30,7 +30,27 @@ export type WaveformKind =
   | "torsades"
   | "svt"
   | "bradycardia"
-  | "pvcs";
+  | "pvcs"
+  | "sinus-tach"
+  | "mat"
+  | "pac"
+  | "wenckebach"
+  | "mobitz-ii"
+  | "junctional"
+  | "idioventricular"
+  | "paced"
+  | "posterior-stemi"
+  | "nstemi"
+  | "wellens"
+  | "brugada"
+  | "hypothermia"
+  | "digoxin"
+  | "long-qt"
+  | "early-repol"
+  | "rvh"
+  | "agonal"
+  | "pulmonary-embolism"
+  | "pericardial-effusion";
 
 export interface ECGCase {
   id: string;
@@ -46,6 +66,7 @@ export interface ECGCase {
   hints: string[];
   explanation: string;
   keyPoints: string[];
+  symptoms?: string[];
 }
 
 export const CASES: ECGCase[] = [
