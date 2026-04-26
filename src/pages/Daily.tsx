@@ -165,6 +165,17 @@ function Result({ c, correct, attemptsCount }: { c: ReturnType<typeof getDailyCa
         <h3 className="font-display text-lg font-semibold">Explicación clínica</h3>
         <p className="mt-2 leading-relaxed text-muted-foreground">{c.explanation}</p>
 
+        {c.symptoms && c.symptoms.length > 0 && (
+          <>
+            <h4 className="mt-6 text-xs uppercase tracking-widest text-warning">Síntomas asociados</h4>
+            <ul className="mt-2 flex flex-wrap gap-2">
+              {c.symptoms.map((s, i) => (
+                <li key={i} className="rounded-md border border-warning/30 bg-warning/5 px-2.5 py-1 text-xs text-warning">{s}</li>
+              ))}
+            </ul>
+          </>
+        )}
+
         <h4 className="mt-6 text-xs uppercase tracking-widest text-primary">Puntos clave de aprendizaje</h4>
         <ul className="mt-2 space-y-1.5">
           {c.keyPoints.map((k, i) => (

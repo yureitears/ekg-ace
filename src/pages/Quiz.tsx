@@ -164,6 +164,16 @@ const Quiz = () => {
               </Button>
             </div>
             <p className="mt-3 leading-relaxed text-muted-foreground">{current.explanation}</p>
+            {current.symptoms && current.symptoms.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs uppercase tracking-widest text-warning">Síntomas</p>
+                <div className="mt-1.5 flex flex-wrap gap-2">
+                  {current.symptoms.map((s, i) => (
+                    <span key={i} className="rounded-md border border-warning/30 bg-warning/5 px-2.5 py-1 text-xs text-warning">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="mt-4 flex flex-wrap gap-2">
               {current.keyPoints.map((k, i) => (
                 <span key={i} className="rounded-md border border-primary/30 bg-primary/5 px-2.5 py-1 text-xs text-primary">
