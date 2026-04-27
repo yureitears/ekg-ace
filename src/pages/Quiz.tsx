@@ -3,8 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Timer, CheckCircle2, XCircle, ChevronRight, Filter } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { ECGStrip } from "@/components/ECGStrip";
+import { ECG12Lead } from "@/components/ECG12Lead";
+import type { Lead } from "@/components/ECGStrip";
 import { Button } from "@/components/ui/button";
-import { CASES, type Difficulty, type Category } from "@/data/cases";
+import { CASES, KEY_LEADS_BY_WAVEFORM, type Difficulty, type Category } from "@/data/cases";
 import { recordAttempt } from "@/lib/storage";
 
 const DIFFS: Difficulty[] = ["beginner", "intermediate", "advanced"];
