@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Flame, Lightbulb, CheckCircle2, XCircle, RefreshCcw } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { ECGStrip } from "@/components/ECGStrip";
+import { ECG12Lead } from "@/components/ECG12Lead";
+import type { Lead } from "@/components/ECGStrip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getDailyCase } from "@/data/cases";
+import { getDailyCase, KEY_LEADS_BY_WAVEFORM } from "@/data/cases";
 import { loadStats, recordAttempt, recordDaily, todayKey } from "@/lib/storage";
 
 const MAX_ATTEMPTS = 4;
@@ -14,8 +16,10 @@ const Daily = () => {
   const c = useMemo(() => getDailyCase(), []);
   const stored = loadStats().dailyHistory[todayKey()];
   const [guess, setGuess] = useState("");
+  const [view, setView] = useState<"single" | "twelve">("single");
   const [attempts, setAttempts] = useState<string[]>([]);
   const [done, setDone] = useState<null | { correct: boolean }>(stored ? { correct: stored.correct } : null);
+  const keyLeads = (KEY_LEADS_BY_WAVEFORM[c.waveform] ?? ["II"]) as Lead[];
 
   const hintsShown = Math.min(attempts.length, c.hints.length);
   const remaining = MAX_ATTEMPTS - attempts.length;
