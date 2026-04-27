@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Flame, Lightbulb, CheckCircle2, XCircle, RefreshCcw } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { ECGStrip } from "@/components/ECGStrip";
+import { ECG12Lead } from "@/components/ECG12Lead";
+import type { Lead } from "@/components/ECGStrip";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getDailyCase } from "@/data/cases";
+import { getDailyCase, KEY_LEADS_BY_WAVEFORM } from "@/data/cases";
 import { loadStats, recordAttempt, recordDaily, todayKey } from "@/lib/storage";
 
 const MAX_ATTEMPTS = 4;
@@ -14,8 +16,10 @@ const Daily = () => {
   const c = useMemo(() => getDailyCase(), []);
   const stored = loadStats().dailyHistory[todayKey()];
   const [guess, setGuess] = useState("");
+  const [view, setView] = useState<"single" | "twelve">("single");
   const [attempts, setAttempts] = useState<string[]>([]);
   const [done, setDone] = useState<null | { correct: boolean }>(stored ? { correct: stored.correct } : null);
+  const keyLeads = (KEY_LEADS_BY_WAVEFORM[c.waveform] ?? ["II"]) as Lead[];
 
   const hintsShown = Math.min(attempts.length, c.hints.length);
   const remaining = MAX_ATTEMPTS - attempts.length;
@@ -59,7 +63,30 @@ const Daily = () => {
           </div>
         </div>
 
-        <ECGStrip kind={c.waveform} height={260} animated showLabel="DERIVACIÓN II · 25 mm/s" />
+        <div className="mb-3 flex items-center justify-end gap-1">
+          <button
+            onClick={() => setView("single")}
+            className={`rounded-md px-2.5 py-1 font-mono-clinical text-[11px] uppercase tracking-widest transition-colors ${
+              view === "single" ? "bg-primary text-primary-foreground" : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            DII · Tira larga
+          </button>
+          <button
+            onClick={() => setView("twelve")}
+            className={`rounded-md px-2.5 py-1 font-mono-clinical text-[11px] uppercase tracking-widest transition-colors ${
+              view === "twelve" ? "bg-primary text-primary-foreground" : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            12 derivaciones
+          </button>
+        </div>
+
+        {view === "single" ? (
+          <ECGStrip kind={c.waveform} height={260} animated showLabel="DERIVACIÓN II · 25 mm/s" />
+        ) : (
+          <ECG12Lead kind={c.waveform} keyLeads={keyLeads} caption="ECG DE 12 DERIVACIONES · Las derivaciones marcadas como 'clave' son las diagnósticas" />
+        )}
 
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 font-mono-clinical text-xs">
           <Vital k="FC" v={`${c.rate || "—"} lpm`} />

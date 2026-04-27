@@ -3,8 +3,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Timer, CheckCircle2, XCircle, ChevronRight, Filter } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { ECGStrip } from "@/components/ECGStrip";
+import { ECG12Lead } from "@/components/ECG12Lead";
+import type { Lead } from "@/components/ECGStrip";
 import { Button } from "@/components/ui/button";
-import { CASES, type Difficulty, type Category } from "@/data/cases";
+import { CASES, KEY_LEADS_BY_WAVEFORM, type Difficulty, type Category } from "@/data/cases";
 import { recordAttempt } from "@/lib/storage";
 
 const DIFFS: Difficulty[] = ["beginner", "intermediate", "advanced"];
@@ -21,6 +23,7 @@ const Quiz = () => {
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [timed, setTimed] = useState(false);
   const [seed, setSeed] = useState(0);
+  const [view, setView] = useState<"single" | "twelve">("single");
 
   const pool = useMemo(() => {
     return CASES.filter((c) => (!category || c.category === category) && (!difficulty || c.difficulty === difficulty));
@@ -114,7 +117,34 @@ const Quiz = () => {
           <Button variant="ghost" size="sm" onClick={() => setSeed((s) => s + 1)}>Mezclar</Button>
         </div>
 
-        <ECGStrip kind={current.waveform} height={240} animated showLabel={`CASO ${current.id.toUpperCase()} · ${current.category}`} />
+        <div className="mb-3 flex items-center justify-end gap-1">
+          <button
+            onClick={() => setView("single")}
+            className={`rounded-md px-2.5 py-1 font-mono-clinical text-[11px] uppercase tracking-widest transition-colors ${
+              view === "single" ? "bg-primary text-primary-foreground" : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            DII
+          </button>
+          <button
+            onClick={() => setView("twelve")}
+            className={`rounded-md px-2.5 py-1 font-mono-clinical text-[11px] uppercase tracking-widest transition-colors ${
+              view === "twelve" ? "bg-primary text-primary-foreground" : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            12 derivaciones
+          </button>
+        </div>
+
+        {view === "single" ? (
+          <ECGStrip kind={current.waveform} height={240} animated showLabel={`CASO ${current.id.toUpperCase()} · ${current.category}`} />
+        ) : (
+          <ECG12Lead
+            kind={current.waveform}
+            keyLeads={(KEY_LEADS_BY_WAVEFORM[current.waveform] ?? ["II"]) as Lead[]}
+            caption={`CASO ${current.id.toUpperCase()} · 12 DERIVACIONES`}
+          />
+        )}
 
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 font-mono-clinical text-xs">
           <Vital k="FC" v={`${current.rate || "—"} lpm`} />

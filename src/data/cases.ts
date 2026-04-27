@@ -1267,6 +1267,54 @@ export const CASES: ECGCase[] = [
   },
 ];
 
+/**
+ * Diagnostic / "key" leads per waveform — what a clinician would inspect first.
+ * Used by the 12-lead viewer to highlight the most informative tracings.
+ */
+export const KEY_LEADS_BY_WAVEFORM: Partial<Record<WaveformKind, string[]>> = {
+  "stemi-anterior": ["V1", "V2", "V3", "V4"],
+  "stemi-inferior": ["II", "III", "aVF"],
+  "posterior-stemi": ["V1", "V2", "V3"],
+  "nstemi": ["V4", "V5", "V6", "I", "aVL"],
+  "wellens": ["V2", "V3"],
+  "pericarditis": ["I", "II", "V5", "V6"],
+  "early-repol": ["V2", "V3", "V4"],
+  "brugada": ["V1", "V2"],
+  "lvh": ["V1", "V5", "V6"],
+  "rvh": ["V1", "V2"],
+  "lbbb": ["V1", "V6"],
+  "rbbb": ["V1", "V6"],
+  "wpw": ["II", "V4", "V5"],
+  "hyperkalemia": ["V2", "V3", "V4"],
+  "hypokalemia": ["V2", "V3"],
+  "pulmonary-embolism": ["I", "III", "V1"],
+  "afib": ["II", "V1"],
+  "aflutter": ["II", "III", "aVF"],
+  "vtach": ["II", "V1"],
+  "vfib": ["II"],
+  "torsades": ["II", "V1"],
+  "long-qt": ["II", "V2", "V3"],
+  "first-degree-av": ["II"],
+  "third-degree-av": ["II", "V1"],
+  "wenckebach": ["II"],
+  "mobitz-ii": ["II"],
+  "junctional": ["II"],
+  "idioventricular": ["II", "V1"],
+  "paced": ["II", "V1"],
+  "pvcs": ["II", "V1"],
+  "sinus-tach": ["II"],
+  "bradycardia": ["II"],
+  "svt": ["II", "V1"],
+  "mat": ["II", "V1"],
+  "pac": ["II"],
+  "hypothermia": ["II", "V4"],
+  "digoxin": ["V5", "V6"],
+  "agonal": ["II"],
+  "asystole": ["II"],
+  "pericardial-effusion": ["II", "V1", "V5"],
+  "nsr": ["II"],
+};
+
 // Pick "case of the day" deterministically by date
 export function getDailyCase(date = new Date()): ECGCase {
   const epoch = new Date("2025-01-01").getTime();
@@ -1274,3 +1322,4 @@ export function getDailyCase(date = new Date()): ECGCase {
   const idx = ((day % CASES.length) + CASES.length) % CASES.length;
   return CASES[idx];
 }
+
