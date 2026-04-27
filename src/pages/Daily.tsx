@@ -63,7 +63,30 @@ const Daily = () => {
           </div>
         </div>
 
-        <ECGStrip kind={c.waveform} height={260} animated showLabel="DERIVACIÓN II · 25 mm/s" />
+        <div className="mb-3 flex items-center justify-end gap-1">
+          <button
+            onClick={() => setView("single")}
+            className={`rounded-md px-2.5 py-1 font-mono-clinical text-[11px] uppercase tracking-widest transition-colors ${
+              view === "single" ? "bg-primary text-primary-foreground" : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            DII · Tira larga
+          </button>
+          <button
+            onClick={() => setView("twelve")}
+            className={`rounded-md px-2.5 py-1 font-mono-clinical text-[11px] uppercase tracking-widest transition-colors ${
+              view === "twelve" ? "bg-primary text-primary-foreground" : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            12 derivaciones
+          </button>
+        </div>
+
+        {view === "single" ? (
+          <ECGStrip kind={c.waveform} height={260} animated showLabel="DERIVACIÓN II · 25 mm/s" />
+        ) : (
+          <ECG12Lead kind={c.waveform} keyLeads={keyLeads} caption="ECG DE 12 DERIVACIONES · Las derivaciones marcadas como 'clave' son las diagnósticas" />
+        )}
 
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 font-mono-clinical text-xs">
           <Vital k="FC" v={`${c.rate || "—"} lpm`} />
