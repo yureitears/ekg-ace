@@ -23,6 +23,7 @@ const Quiz = () => {
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [timed, setTimed] = useState(false);
   const [seed, setSeed] = useState(0);
+  const [view, setView] = useState<"single" | "twelve">("single");
 
   const pool = useMemo(() => {
     return CASES.filter((c) => (!category || c.category === category) && (!difficulty || c.difficulty === difficulty));
